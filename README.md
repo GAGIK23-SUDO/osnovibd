@@ -1,112 +1,158 @@
-## Лабораторная работа №1 [15.02.2025]
-### Таблица
-![0_table](https://github.com/user-attachments/assets/4ddf7673-91ff-4935-a314-cd1c11e91396)
-
-![](/LabW1/0_table.png)
-### Задание №1
-Выберите из таблицы orders все заказы
-![1](https://github.com/user-attachments/assets/0834e44a-cca6-48f4-8aeb-1a72801bc25c)
-
-![](/LabW1/1.png)
+## Выделение
 
 ```
-SELECT * FROM orders;
+SELECT * FROM products WHERE price < 3000;
 ```
-### Задание №2
-Выберите из таблицы orders все заказы кроме новых. У новых заказов status равен "new". Использовать in
-![2](https://github.com/user-attachments/assets/10350ac7-7ead-4605-87f3-c998afbaf73d)
-
-![](/LabW1/2.png)
 
 ```
-SELECT * FROM orders WHERE status IN ('cancelled','in_progress','delivery')
+SELECT * FROM orders WHERE status in ('cancelled', 'new');
 ```
-### Задание №3
-Выберите из таблицы orders все новые и отмененные заказы. У отмененных заказов status равен "cancelled". У новых заказов status равен "new"
 
-![](/LabW1/3.png)
+## Операторы
 
 ```
-SELECT * FROM orders WHERE status = 'new' OR status = 'cancelled'
+SELECT * FROM orders WHERE sum > 3000 OR products_count >=3:
 ```
-### Задание №4
-Выберите из таблицы orders все заказы содержащие более 3 товаров (products_count).
-Вывести нужно только номер (id) и сумму (sum) заказа
-![4](https://github.com/user-attachments/assets/55bc5648-c849-4927-9ce3-ea8661ba3645)
 
-![](/LabW1/4.png)
+**Оператор OR, в отличие от AND, объединяет два условия**
+
+**У AND приоритет выполнения выше**
 
 ```
-SELECT id,sum FROM orders WHERE products_count > 3
+SELECT * FROM orders WHERE sum BETWEEN 3000 AND 10000 OR status = 'cancelled';
 ```
-## Лабораторная работа №2 [22.02.2025]
-### Задание №161
-#### Таблица
-
-![](/LabW2/161/0_table.png)
-
-1) Выберите из таблицы orders 3 самых дешевых заказа за всё время.
-Данные нужно отсортировать в порядке убывания цены.
-Отмененные заказы не учитывайте.
-
-![](/LabW2/161/1.png)
 
 ```
-select * from orders where status in('new','in_progress','delivery') order by sum desc limit 3;
+SELECT * FROM orders WHERE products_count=2 OR products_count=5 AND status = 'cancelled';
 ```
-2) Выберите из таблицы orders 2 самых дорогих заказов за всё время.
-Данные нужно отсортировать в порядке убывания цены.
-Отмененные заказы не учитывайте.
-
-![](/LabW2/161/2.png)
 
 ```
-select * from orders where status in('new','in_progress','delivery') order by sum desc limit 2;
+SELECT * FROM orders WHERE (products_count=2 OR products_count=5) AND status = 'cancelled';
 ```
-### Задание №166
-#### Таблица
 
-![](/LabW2/166/0_table.png)
-
-3) Добавьте в таблицу orders данные о новом заказе стоимостью 8000 рублей. В заказе 4 товара (products).
-
-![](/LabW2/166/1.png)
+**Скобки используются для изменения приоритета операторов**
 
 ```
-insert into orders (id, products, sum) value (6, 4, 8000);
+SELECT * FROM orders WHERE status = 'cancelled' AND (sum < 3000 or sum > 10000);
 ```
-#### Результат:
-
-![](/LabW2/166/1_result.png)
-
-### Задание №167
-#### Таблица
-
-![](/LabW2/167/0_table.png)
-
-4) Добавьте в таблицу products новый товар — «VR-очки», стоимостью 70000 рублей в количестве (count) 2 штук.
-   
-![](/LabW2/167/1.png)
 
 ```
-insert into products (id, name, count, price) value (7, 'VR-очки', 2, 70000);
+SELECT name, price FROM products ORDER BY price DESC;
 ```
-#### Результат:
-
-![](/LabW2/167/1_result.png)
-
-### Задание №172
-#### Таблица
-
-![](/LabW2/172/0_table.png)
-
-5) В таблицу products внесли данные с ошибкой, вместо "PS5" в наименовании написали IMAC. Исправьте ошибку.
-
-![](/LabW2/172/1.png)
 
 ```
-update products set name='PS5' where id=7;
+SELECT * FROM products WHERE price >=5000 ORDER BY price DESC;
 ```
-#### Результат:
 
-![](/LabW2/172/1_result.png)
+## Сортировка
+
+```
+SELECT name, count, price FROM products WHERE price <= 3000 ORDER BY name;
+```
+
+```
+SELECT name, count, price FROM products WHERE price <= 3000 ORDER BY name ASC;
+```
+
+```
+SELECT name, count, price FROM products WHERE price <= 3000 ORDER BY name DESC;
+```
+
+**ASC - сортировка по возрастанию (по умолчанию)**
+
+**DESC - сортировка по убыванию**
+
+```
+SELECT name, price FROM products WHERE count>0
+ORDER BY name LIMIT 6 OFFSET 12;
+```
+
+**LIMIT - ограничение количества строк(в данном случае первые 6)**
+
+**OFFSET - смещение, указывает на то, сколько записей нужно пропустить(в данном случае первые 12)**
+
+## Добавление
+
+**Добавление с помощью VALUES:**
+
+```
+INSERT INTO orders (id, products, sum) VALUES (6, 3, 3000)
+```
+
+```
+INSERT INTO products (id, name, count, price) VALUE (8, 'iMac 21', 0, 100100)
+```
+
+**Можно использовать как VALUE, так и VALUES**
+
+**Добавление с помощью SET:**
+
+```
+INSERT INTO table (field1, field2) VALUES (value1, value2);
+```
+
+```
+INSERT INTO table SET field1=value1, field2=value2;
+```
+
+**Разница между VALUES и SET**
+
+```
+INSERT INTO users SET id=10, first_name='Никита', last_name='Петров'
+```
+
+**Пакетный режим:**
+
+```
+INSERT INTO table (field1, field2)  
+VALUES  
+    (value1_1, value1_2), 
+    (value2_1, value2_2), 
+    (value3_1, value3_2);
+```
+
+## Обновление/Замена
+
+```
+UPDATE users SET salary=salary*1.1 WHERE salary<20000
+```
+
+**Умножение на 1.1, значит увеличение на 10%**
+
+```
+UPDATE products SET name='iMac' WHERE name = 'IMAC'
+```
+
+**NULL – это особое слово в MySQL и в отличии от "cancelled" или "new", его нужно писать без кавычек. 
+А чтобы сравнить значение в поле с NULL, нужно использовать не символы равенства (=) и неравенства (<>), 
+а специальное выражение IS NULL или IS NOT NULL.**
+
+```
+UPDATE orders SET status='new' WHERE status IS NULL
+```
+
+```
+UPDATE orders SET amount=sum*products_count WHERE amount=0 OR amount IS NULL
+```
+
+```
+UPDATE products SET price=price*1.05 ORDER BY price desc limit 5
+```
+
+**Умножение на 1.05, значит увеличение на 5%**
+
+## Удаление
+
+```
+DELETE FROM products WHERE count<1;
+```
+
+**Удаление всех строк в таблице:**
+
+```
+DELETE FROM users;
+```
+
+```
+TRUNCATE table users;
+```
