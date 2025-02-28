@@ -1,8 +1,11 @@
 ## Лабораторная работа №1 [15.02.2025]
 ### Таблица
+![0_table](https://github.com/user-attachments/assets/4ddf7673-91ff-4935-a314-cd1c11e91396)
+
 ![](/LabW1/0_table.png)
 ### Задание №1
 Выберите из таблицы orders все заказы
+![1](https://github.com/user-attachments/assets/0834e44a-cca6-48f4-8aeb-1a72801bc25c)
 
 ![](/LabW1/1.png)
 
@@ -11,6 +14,7 @@ SELECT * FROM orders;
 ```
 ### Задание №2
 Выберите из таблицы orders все заказы кроме новых. У новых заказов status равен "new". Использовать in
+![2](https://github.com/user-attachments/assets/10350ac7-7ead-4605-87f3-c998afbaf73d)
 
 ![](/LabW1/2.png)
 
@@ -28,6 +32,7 @@ SELECT * FROM orders WHERE status = 'new' OR status = 'cancelled'
 ### Задание №4
 Выберите из таблицы orders все заказы содержащие более 3 товаров (products_count).
 Вывести нужно только номер (id) и сумму (sum) заказа
+![4](https://github.com/user-attachments/assets/55bc5648-c849-4927-9ce3-ea8661ba3645)
 
 ![](/LabW1/4.png)
 
